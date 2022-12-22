@@ -10,4 +10,4 @@ Toda la informacion la podras encontrar aquí y en los links dados por el Discor
 
 Cada semana esta en una rama independiente, en la cual se ira detallando a continuación:
 
-- Semana 03: <a href="https://github.com/jackquispe/backend-g10/tree/semana03">LINK</a>
+- Semana 03: <a href="https://github.com/jackquispe/backend-10/tree/semana03">LINK</a>
