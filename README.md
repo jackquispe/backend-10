@@ -58,3 +58,13 @@ INSTALLED_APPS = [
 python manage.py makemigrations
 python manage.py migrate
 ```
+
+## Luego de esto instalamos Django Rest Framework
+```
+pip install djangorestframework
+```
+
+## Agregar DRF a INSTALLED_APPS
+```
+settings > INSTALLED_APPS
+```
