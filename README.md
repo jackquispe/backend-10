@@ -1,13 +1,28 @@
-# Repositorio del Backend de CodiGo
+## Crear el entorno virtual
+```
+python -m venv
+```
 
-<p align="center">
-    <img src="https://codigo.edu.pe/public/img/codigo-logo.png">
-</p>
+## Activar el entorno virtual
+```
+venv\Scripts\activate
+source venv/Scripts/activate
+source venv/bin/activate
+```
 
-## Este sera el repositorio del curso por las siguientes 10 semanas
+## Intslar Django
+```
+pip install Django
+pip freeze > requirements.txt
+```
 
-Toda la informacion la podras encontrar aquí y en los links dados por el Discord
+## Crear nuestro proyecto
+```
+django-admin startproject django_intro
+```
 
-Cada semana esta en una rama independiente, en la cual se ira detallando a continuación:
-
-- Semana 03: <a href="https://github.com/jackquispe/backend-10/tree/semana03">LINK</a>
+## Correr el servicio
+```
+cd django_intro
+python manage.py runserver
+```
