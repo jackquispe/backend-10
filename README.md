@@ -38,3 +38,23 @@ python manage.py createsuperuser
 ```
 user: admin
 pass: administrador
+
+## Crar una app
+```
+python manage.py startapp "nombre_app"
+```
+
+## Registramos nuestra app en settings > INSTALLED_APPS 
+
+```python
+INSTALLED_APPS = [
+    .....
+    'almacen'
+]
+```
+
+## Crear nuestro model y migrar
+```
+python manage.py makemigrations
+python manage.py migrate
+```
