@@ -26,3 +26,15 @@ django-admin startproject django_intro
 cd django_intro
 python manage.py runserver
 ```
+
+## Migrar los modelos
+```
+python manage.py migrate
+```
+
+## Crear un superusuario
+```
+python manage.py createsuperuser
+```
+user: admin
+pass: administrador
