@@ -44,7 +44,7 @@ pass: administrador
 python manage.py startapp "nombre_app"
 ```
 
-## Registramos nuestra app en settings > INSTALLED_APPS 
+## Registramos nuestra app en settings.py > INSTALLED_APPS 
 
 ```python
 INSTALLED_APPS = [
