@@ -67,4 +67,16 @@ pip install djangorestframework
 ## Agregar DRF a INSTALLED_APPS
 ```
 settings > INSTALLED_APPS
+.....
+'rest_framework',
+```
+
+## Documentar nuestra API con swagger y Redoc
+```
+pip install drf-yasg
+```
+
+## Configurar `drf-yasg`
+```
+
 ```

@@ -1,9 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import ProductosModel, CategoriasModel
-from .serializers import ProductosSerializer, CategoriasSerializer
+from .models import (ProductosModel, CategoriasModel,
+                      ClientesModel, OrdenesModel, DetalleOrdenModel)
+from .serializers import (ProductosSerializer, CategoriasSerializer,
+                           ClientesSerializer, OrdenesSerializer, GetOrdenesSerializer)
 from rest_framework import generics, status
 from rest_framework.response import Response
+from django.contrib.auth.models import User
+
+from django.db import transaction
 
 # Create your views here.
 
@@ -101,6 +106,68 @@ class ActualizarCategoriasView(generics.GenericAPIView):
             return Response({
                 'message': 'Categoria eliminado correctamente'
             }, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({
+                'message': 'Internal server error',
+                'error': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+class OrdenesView(generics.GenericAPIView):
+    queryset = OrdenesModel.objects.all()
+    serializer_class = GetOrdenesSerializer
+
+    @transaction.atomic
+    
+    def post(self, request):
+        try:
+            orden = self.get_serializer(data=request.data)
+
+            if orden.is_valid():
+                cliente = ClientesModel(**request.data['cliente'])
+                cliente.save()
+
+                usuario = User.objects.get(id=request.data['usuario_id'])
+                
+                orden_dict = {
+                    'codigo': request.data['codigo'],
+                    'observacion': request.data['observacion'],
+                    'cliente_id': cliente,
+                    'usuario_id': usuario
+                }
+                orden = OrdenesModel(**orden_dict)
+                orden.save()
+
+                for detalle in request.data['detalle']:
+                    producto =ProductosModel.objects.get(id=detalle['producto_id'])
+                    detalle_dict = {
+                        'cantidad': detalle['cantidad'],
+                        'producto_id': producto,
+                        'orden_id': orden
+                    }
+                detalle =DetalleOrdenModel(**detalle_dict)
+                detalle.save()
+                
+
+                return Response({
+                    'message': 'Operacion exitosa'
+                }, status=status.HTTP_201_CREATED)
+            error = 'Faltan campos'
+            for campo in orden.errors:
+                error = error + ' ' + campo + ','
+            return Response({
+                'message': error
+            })
+        except Exception as e:
+            return Response({
+                'message': 'Internal server error',
+                'error': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    def get(self, request):
+        try:
+            ordenes = self.get_queryset()
+            serializer = self.get_serializer(ordenes, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({
                 'message': 'Internal server error',
