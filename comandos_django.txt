@@ -1,0 +1,5 @@
+django-admin startproject NOMBRE  > inicializa un nuevo proyecto
+python manage.py startapp NOMBRE > crea una nueva aplicaicon del proytecto
+python manage.py showmigrations > muestra todas las mugraciones y las que se han efectuado en la bd se colacara una x
+python manage.py makemigrations NOMBRE --name nombre de la migracion
+
