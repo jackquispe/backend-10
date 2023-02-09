@@ -1,6 +1,6 @@
 from rest_framework.generics import ListCreateAPIView, DestroyAPIView, ListAPIView
 from .models import CategoriaModel, PlatoModel
-from .serializers import CAtegoriaSerializers, PlatoSerializer, CAtegoriaConPlatosSerializer
+from .serializers import CAtegoriaSerializers, MostrarPlatoSerializer, CAtegoriaConPlatosSerializer, CrearPlatoSerializer
 from rest_framework.response import Response
 from rest_framework.request import Request
 # List > Listar (get)
@@ -24,7 +24,8 @@ class CategoriaApiView(ListCreateAPIView):
 
 class PlatoApiView(ListCreateAPIView):
     queryset = PlatoModel.objects.all()
-    serializer_class = PlatoSerializer
+    # serializer_class > cuando nosotros modificamos la funcionabilidad ed los metodos ya no es necesario
+    # definir los atributos obligatorios (queryset)
 
     def get(self, request: Request):
         # al colocar ':' indicamos que el tipo de dato sera esa variable
@@ -39,7 +40,7 @@ class PlatoApiView(ListCreateAPIView):
         print(resultado)
         # Aca llammaos al serializer y le pasamos la informacion proveniente de la bd
         # y cin el paramemtro many truee indicamos que le stamos pasando el arreglo de instancias
-        serializador = PlatoSerializer(instance=resultado, many=True)
+        serializador = MostrarPlatoSerializer(instance=resultado, many=True)
         print(serializador.data)
         return Response(data={
             'content': serializador.data
@@ -48,7 +49,7 @@ class PlatoApiView(ListCreateAPIView):
     def post(self, request: Request):
         body = request.data
         # cuadno queremos verificar si la informacion entrante es valida entonces utiilizamos el parametro data envez del parametro instacnce
-        serializador = PlatoSerializer(data=body)
+        serializador = CrearPlatoSerializer(data=body)
         # es el encargado de validar si la data es correctra y cumple con todos los requisitos
         valida = serializador.is_valid()
 
@@ -82,7 +83,7 @@ class PlatoApiView(ListCreateAPIView):
         # ASi guardamos la informacion en al base de datos utilizando el serializador
         nuevoPlato = serializador.save()
         print(nuevoPlato)
-        serializar = PlatoSerializer(instance=nuevoPlato)
+        serializar = MostrarPlatoSerializer(instance=nuevoPlato)
         return Response(data={
             'message': 'Plato creado exitosamemnte',
             # data > es la informacion convertida a un diccionario para que pueda ser entendida por el cliente
@@ -114,13 +115,21 @@ class PlatoDestroyApiView(DestroyAPIView):
 
 class ListarCAtegoriaApiView(ListAPIView):
     def get(self, request: Request, pk : int):
+        # SEELCT * FROM CATEGORIAS WHERE ID=... LIMIT 1;
         categoriaEncontrada = CategoriaModel.objects.filter(id = pk).first()
         print(categoriaEncontrada)
         if categoriaEncontrada is None:
             return Response(data={
                 'message': 'categoria no existe'
             })
-        
+        # dir(instancia) > nos muestra todos los atributos y metodos de la clase
+        # print(dir(categoriaEncontrada))
+
+        # SELECT * FROM platos WHERE categoria_id=... AND id=10;
+        print(categoriaEncontrada.platos.filter(id=10).all())
+        plato = categoriaEncontrada.platos.all()[0]
+        print(plato.nombre)
+
         serializador = CAtegoriaConPlatosSerializer(instance=categoriaEncontrada)
 
         return Response(data={
