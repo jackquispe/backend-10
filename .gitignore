@@ -1,2 +1,4 @@
 entorno_prueba
-.env
+venv
+
+node_modules
