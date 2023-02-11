@@ -1,0 +1,7 @@
+npx prisma init > Sirve para inicializar nuestro prisma en nuestro proyecto
+npx prisma migrate dev > crea una nueva migracion segun los cambios realizados en el schema de prisma
+npx prisma migrate deploy > ejecuta las migraciones faltantes en nuestra body
+npx prisma format > formatea el archivo prisma a un formato mas legible
+npx prisma migrate reset > cuidado! esto elimiona toda al info de la bd y crea las tablas
+
+

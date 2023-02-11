@@ -28,6 +28,7 @@ model Producto {
   precio   Float?
   tieneIgv Boolean @map("tiene_igv")
   sku      String  @unique
+  habilitado Boolean @default(true)
 
   categoriaId Int @map("categoria_id")
 

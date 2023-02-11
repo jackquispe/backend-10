@@ -1,7 +1,16 @@
-const express = require("express");
-const { PrismaClient } = require("@prisma/client")
+// Asi se importa utilizando ECMAScript
+import express from 'express'
 
-const prisma = new PrismaClient();
+import { crearCategoria, listarCategorias, buscarCategoriaPorId, actualizarCategoria, eliminarCategoria } from './controllers/categorias.controller.js'
+
+import { productoRouter } from './routes/productos.routes.js';
+
+// Asi se importa utlizando CommonJs
+// const express = require("express");
+// const { PrismaClient } = require("@prisma/client")
+// const { crearCategoria } = require('./controllers/categorias.controller')
+
+
 
 // se va a copiar toda la funcionalidad de la loiberia express en la variable servidor 
 const servidor = express()
@@ -17,6 +26,11 @@ servidor.get('/', (req,res)=>{
         message: "Bienvenido a mi API",
     });
 });
+
+servidor.use(productoRouter)
+
+servidor.route('/categorias').post(crearCategoria).get(listarCategorias)
+servidor.route('/categorias/:id').get(buscarCategoriaPorId).put(actualizarCategoria).delete(eliminarCategoria)
 
 servidor.post("/productos", (req,res)=>{
     console.log(req.body);
